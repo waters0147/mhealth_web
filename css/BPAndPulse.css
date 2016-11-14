@@ -1,0 +1,37 @@
+#box{
+	float: left;
+	margin: 0px;
+	width:1200px;
+	height:940px;
+	border-radius: 5px;
+	border: 1px solid gray;
+	margin-top:30px;
+	margin-left:120px;
+
+}
+.subTitle{
+	padding-top: 3px;
+	padding-left: 20px;
+	color:#0088A8;
+	background-color:#DDDDDD;
+	height: 30px;
+	width:auto;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	border-bottom: 1px solid gray;
+}
+.paragram{
+	margin-top:10px;
+	margin-left: 15px; 
+	font-size: 20px;
+}
+#chartBox{
+	margin-top:10px;
+	height:650px;
+	width: 100%;
+}
+.chart{
+	float: left;
+	height:100%;
+	width: 50%;
+}

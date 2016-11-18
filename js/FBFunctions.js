@@ -48,17 +48,40 @@ function statusChangeCallback(response) {
 function fetchFBId() {
 
     FB.api('/me', function(response) {
-      console.log('Successful login for: ' + response.id);
-      document.location.href="member.php?username="+response.id;
-      
+      alert('Successful login for: ' + response.name);
+      console.log('Successful login for: ' + response.name);
+      document.cookie = 'username='+response.id;
+      document.location.href='foodCalendar.php';    
     });
 }
 
-function fb_logout() {
-    FB.getLoginStatus(function(response) {
-        if (response.authResponse) {
-            window.location = 'https://www.facebook.com/logout.php?access_token=' + response.authResponse.accessToken + '&next=登出後要導向的頁面';
-        }
-    });
+function fbLogIn(){
+
+    FB.login(function(response) {
+    // handle the response
+    checkLoginState();
+    }, {scope: 'public_profile,email'});
+}
+
+function fblogout(){     // facebook 登出
+  FB.getLoginStatus(function (response){
+    if(response.status === 'connected'){
+      FB.logout(function(response){    //使用者已成功登出
+        alert("成功登出。");
+        localStorage.clear();
+        //再 refresh 一次，讓登入登出按鈕能正常顯示
+        location.replace( "放欲導回網站的URL" );
+      });
+    } 
+    else if(response.status === 'not_authorized'){
+      // 使用者已登入 Facebook，但是在你的app是無效的
+      FB.logout(function (response) {     // 使用者已登出
+        alert("請重新登入！");
+      });
+      } 
+    else{    // 使用者沒有登入 Facebook
+      alert("請重新登入！");
+    }
+  });
 }
 

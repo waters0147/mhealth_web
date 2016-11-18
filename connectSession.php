@@ -20,7 +20,7 @@ foreach($sql as $row){
 
 if($checkIsRoot){
 	echo "<script type='text/javascript'>alert('Hello Admin');</script>";
-	echo '<meta http-equiv=REFRESH CONTENT=1;url=member.php>';
+	echo '<meta http-equiv=REFRESH CONTENT=1;url=memberList.php>';
 }
 else{
 	echo "<script type='text/javascript'>alert('Login failed');</script>";

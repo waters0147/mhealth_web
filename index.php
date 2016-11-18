@@ -3,7 +3,7 @@
 	<head>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="css/index.css">
-		<script type="text/javascript" src="js/FBFuntions.js"></script>
+		<script src="js/FBFunctions.js"></script>
 		<style>
 			html,body{
 				height: 100%;
@@ -31,7 +31,7 @@
 				</div>
 				<div style="width:70%;margin:0 auto;padding-top: 20px;">
 					<div><input type="submit" class="btn btn-primary" style="width:100%;" value="Login"></input></div>
-					<div style="margin-top: 10px;" class="fbLogin" onclick="checkLoginState()"><span>Facebook Login</span></div>
+					<div style="margin-top: 10px;" class="fbLogin" onclick="fbLogIn();"><span>Facebook Login</span></div>
 				</div>
 			</div>
 		</form>

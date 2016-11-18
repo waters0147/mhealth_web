@@ -16,7 +16,6 @@
 		echo json_encode($result);
 	}
 	else{
-
 		alert("something error");
 	}
 

@@ -5,6 +5,7 @@
 		<link rel="stylesheet" type="text/css" href="css/LeftBar.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 		<script type="text/javascript" src="js/toggle.js"></script>
+		<script type="text/javascript" src="js/FBFunctions.js"></script>
 	</head>
 	<body>
 		
@@ -16,6 +17,7 @@
 		      	</ul>
 		      	<ul class="menuUl">
 		        	<li class="liTitle" id="2">健康紀錄</li>
+		        	<a href="foodRecord.php"><li class="fitness" style="display:none;">飲食紀錄</li></a>
 		        	<a href="#"><li class="fitness" style="display:none;">減重紀錄</li></a>
 		        	<a href="BPAndPulse.php"><li class="fitness" style="display:none;">血壓量測</li></a>
 		        	<a href="#"><li class="fitness" style="display:none;">喝水日記</li></a>
@@ -24,7 +26,7 @@
 		        	<a href="#"><li class="fitness" style="display:none;">體溫紀錄</li></a>
 		      	</ul>
 		      	<ul class="menuUl">
-		        	<a href="logout.php" onclick="fbLogout()"><li class="liTitle">登出</li></a>
+		        	<a href="logout.php" onclick="fblogout();"><li class="liTitle">登出</li></a>
 		      	</ul>
 	      	</div>
 

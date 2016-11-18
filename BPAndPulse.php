@@ -32,7 +32,10 @@
 
 		<?php include("PrototypeFooter.php"); ?>
 
-
+		<script type="text/javascript">
+			var userid=getCookie("username");
+			alert(userid);
+		</script>
 
 		
 	</body>

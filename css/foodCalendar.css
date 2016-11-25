@@ -1,0 +1,17 @@
+html,body{
+	height: 100%;
+}
+.table tbody>tr>td.vert-align{
+     vertical-align: middle;
+     font-family: "Times New Roman";
+}
+td {
+	text-align: center;
+	font-size: 30px;
+
+}
+
+.foodImg{
+	height: 150px;
+	width: 150px;
+}

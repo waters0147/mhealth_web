@@ -5,19 +5,41 @@ $(document).ready(function(){
         dataType:'json',
         success:function(result){
             console.log('success');
+            var url = window.location.href.toString();
+            if(url.includes("BPAndPulse.php")){
+                var systolic = [];
+                var diastolic = [];
+                var pulse = [];
 
-            var systolic = [];
-            var diastolic = [];
-            var pulse = [];
-
-            for(i=0;i<Object.keys(result).length;i++){
-                var date = result[i].date;
-                systolic[i] = [Date.parse(date),parseInt(result[i].systolic)];
-                diastolic[i] = [Date.parse(date),parseInt(result[i].diastolic)];
-                pulse[i] = [Date.parse(date),parseInt(result[i].pulse)];
+                for(i=0;i<Object.keys(result).length;i++){
+                    var date = result[i].date;
+                    systolic[i] = [Date.parse(date),parseInt(result[i].systolic)];
+                    diastolic[i] = [Date.parse(date),parseInt(result[i].diastolic)];
+                    pulse[i] = [Date.parse(date),parseInt(result[i].pulse)];
+                }
+                drawBPChart(systolic,diastolic);
+                drawPulseChart(pulse);
             }
-            drawBPChart(systolic,diastolic);
-            drawPulseChart(pulse);
+            else if(url.includes("foodRecord.php")){
+                var food = new Array();
+                var tmp=[];
+                for(i=0;i<Object.keys(result).length;i++){
+                    var time = result[i].time;
+                    /*var data = new Object();
+                    //highChart部分會少八小時，故強制加八小      
+                    data.Time=Date.parse(time)+1000*60*60*8;
+                    data.Calories=parseInt(result[i].calories);
+                    data.Name=result[i].name;                        
+                    //food[i] = data;*/
+
+                    food[i] = {"Time:"+Date.parse(time)+1000*60*60*8,"Calories:"+parseInt(result[i].calories),"Name:"+result[i].name};
+
+                }
+                console.log(food);
+                drawFoodRecordChart(food);
+            }
+            /*else{
+            }*/
 
 
         },
@@ -114,6 +136,50 @@ function drawPulseChart(pulse) {
     });
 }
 
+function drawFoodRecordChart(foodRecord) { 
+    var PulseChart = Highcharts.chart('food', {
+        chart: {
+            type: 'line'
+        },
+        tooltip:{
+
+            formatter: function() {
+                //console.log(this.point.config[2]);
+                var s = '<b>' + Highcharts.dateFormat("%A, %b %e, %H:%M:%S", this.x) + '</b>';
+                console.log(this);
+                //s+='Name: '+this.point[0]+'</br>'+
+                //   'Calories '+this.point[1];
+
+                //return s;
+            
+            }
+
+            
+            
+        },
+        credits: {
+            enabled: false
+        },
+        title: {
+            text: 'Calories'
+        },
+        xAxis: {
+            type:'datetime'
+        },
+        yAxis: {
+            title: {
+                text: 'Y-value'
+            },
+            
+        },
+        series: [{
+            name: 'calories',         
+            data: foodRecord
+
+        }]
+    });
+
+}
 
 function getCookie(cname) {
     var name = cname + "=";

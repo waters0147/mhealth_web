@@ -1,20 +1,18 @@
 window.fbAsyncInit = function() {
-	FB.init({
-	appId      : '562962317233940',
-	xfbml      : true,
-	version    : 'v2.8'
-	});
+    FB.init({
+      appId      : '1095415993853029',
+      xfbml      : true,
+      version    : 'v2.8'
+    });
+  };
 
-	
-};
-
-(function(d, s, id){
-	var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) {return;}
-    js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_US/sdk.js";
-    fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
 
 
 
@@ -49,6 +47,7 @@ function fetchFBId() {
 
     FB.api('/me', function(response) {
       alert('Successful login for: ' + response.name);
+      
       console.log('Successful login for: ' + response.name);
       document.cookie = 'username='+response.id;
       document.location.href='foodCalendar.php';    
@@ -56,7 +55,6 @@ function fetchFBId() {
 }
 
 function fbLogIn(){
-
     FB.login(function(response) {
     // handle the response
     checkLoginState();
@@ -84,4 +82,22 @@ function fblogout(){     // facebook 登出
     }
   });
 }
+
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+
 

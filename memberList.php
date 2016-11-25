@@ -3,9 +3,7 @@
 <head>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="css/member.css">
-	<style>
-
-	</style>
+	<script src="js/FBFunctions.js"></script>
 </head>
 <body>
 
@@ -67,7 +65,7 @@
 										<td class="filterable-cell">'.$value['name'].'</td>
 										<td class="filterable-cell">'.$value['bornday'].'</td>
 										<td class="filterable-cell">
-											<button type="button" class="btn btn-primary" onclick="showUser()">Show
+											<button type="button" class="btn btn-primary" onclick="showUser('.$value['id'].')">Show
 											</button>
 										</td>
 									</tr>';
@@ -81,10 +79,11 @@
 		</div>
 	</div>
 
-	<script type="text/javascript">
-		
+
+	<script type="text/javascript">	
 		function showUser(userID){
-			document.location.href='PrototypeFoodRecord.php';
+		      document.cookie = 'username='+userID;
+		      document.location.href='foodCalendar.php';
 		}
 	</script>
 

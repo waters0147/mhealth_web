@@ -13,7 +13,7 @@
 			<div style="padding-top: 30px;">
 		    	<ul class="menuUl">
 		        	<li class="liTitle" id="1">首頁</li>
-		        	<a href="PrototypeFoodRecord.php"><li class="calendar" style="display:none;">Food Calendar</li></a>
+		        	<a href="foodCalendar.php"><li class="calendar" style="display:none;">Food Calendar</li></a>
 		      	</ul>
 		      	<ul class="menuUl">
 		        	<li class="liTitle" id="2">健康紀錄</li>

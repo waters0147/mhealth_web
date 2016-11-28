@@ -17,6 +17,7 @@
 .liTitle{
 	background: linear-gradient(to right,#000079, #2894FF);	
 	color: white;
+
 }
 
 li{
@@ -28,5 +29,8 @@ li{
     border-right: 1px solid #F0F0F0;
 	padding-top: 6px;
 	height: 40px; 
+	cursor: pointer;
+	cursor: hand;
 }
+
 

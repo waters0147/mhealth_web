@@ -32,7 +32,7 @@ $(document).ready(function(){
                     data.Name=result[i].name;                        
                     //food[i] = data;*/
 
-                    food[i] = {"Time:"+Date.parse(time)+1000*60*60*8,"Calories:"+parseInt(result[i].calories),"Name:"+result[i].name};
+                    food[i] = [Date.parse(time)+1000*60*60*8,parseInt(result[i].calories),result[i].name];
 
                 }
                 console.log(food);
@@ -140,22 +140,6 @@ function drawFoodRecordChart(foodRecord) {
     var PulseChart = Highcharts.chart('food', {
         chart: {
             type: 'line'
-        },
-        tooltip:{
-
-            formatter: function() {
-                //console.log(this.point.config[2]);
-                var s = '<b>' + Highcharts.dateFormat("%A, %b %e, %H:%M:%S", this.x) + '</b>';
-                console.log(this);
-                //s+='Name: '+this.point[0]+'</br>'+
-                //   'Calories '+this.point[1];
-
-                //return s;
-            
-            }
-
-            
-            
         },
         credits: {
             enabled: false

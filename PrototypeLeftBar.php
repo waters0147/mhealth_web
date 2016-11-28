@@ -12,11 +12,11 @@
 		<div class="menu">
 			<div style="padding-top: 30px;">
 		    	<ul class="menuUl">
-		        	<li class="liTitle" id="1">首頁</li>
+		        	<li class="liTitle" id="1" style="cursor: pointer;cursor: hand;">首頁</li>
 		        	<a href="foodCalendar.php"><li class="calendar" style="display:none;">Food Calendar</li></a>
 		      	</ul>
 		      	<ul class="menuUl">
-		        	<li class="liTitle" id="2">健康紀錄</li>
+		        	<li class="liTitle" id="2" style="cursor: pointer;cursor: hand;">健康紀錄</li>
 		        	<a href="foodRecord.php"><li class="fitness" style="display:none;">飲食紀錄</li></a>
 		        	<a href="#"><li class="fitness" style="display:none;">減重紀錄</li></a>
 		        	<a href="BPAndPulse.php"><li class="fitness" style="display:none;">血壓量測</li></a>

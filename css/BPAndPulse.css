@@ -1,12 +1,14 @@
 #box{
-	float: left;
+	position: relative;
+	display: inline-block;
 	margin: 0px;
-	width:1200px;
-	height:940px;
+	width:60%;
+	height:900px;
 	border-radius: 5px;
 	border: 1px solid gray;
-	margin-top:30px;
-	margin-left:120px;
+	margin-left:400px;
+	margin-top:25px;
+	margin-bottom: 25px;
 
 }
 .subTitle{

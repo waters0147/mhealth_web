@@ -5,7 +5,6 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 		<link href="CSS/lightbox.css" rel="stylesheet">
 		<link rel="stylesheet" type="text/css" href="CSS/foodCalendar.css">
-
 	</head>
 	<body>
 		
@@ -14,7 +13,7 @@
 			include("PrototypeLeftBar.php");
 		?>	
 
-		<div style="float:left;">
+		<div class="tableBox">
 			<table class="table">
 				<thead>
 					<tr>
@@ -31,7 +30,7 @@
 				<tbody>
 					<tr>
 						<td class="vert-align">breakfast</td>
-						<td><a href="food/apple-7.jpg" data-lightbox="image-1"><img class="foodImg" src="food/apple-7.jpg"/></a></td>
+						<td><a href="food/apple-7.jpg" data-title="aaa" data-lightbox="image-1"><img class="foodImg" src="food/apple-7.jpg"/></a></td>
 						<td><a href="food/breakfast.jpg" data-lightbox="image-1"><img class="foodImg" src="food/breakfast.jpg"/></a></td>
 						<td><a href="food/breakfast1.jpg" data-lightbox="image-1"><img class="foodImg" src="food/breakfast1.jpg"/></a></td>
 						<td><img class="foodImg"/></td>
@@ -89,6 +88,12 @@
 
 		
 		<script src="js/lightbox.js"></script>
+		<script>
+		$(document).ready(
+			function(){
+			}
+		);
+		</script>
 	</body>
 	
 </html>

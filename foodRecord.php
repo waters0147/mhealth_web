@@ -6,6 +6,7 @@
 		<script src="js/FBFunctions.js"></script>
 		<script src="http://code.highcharts.com/highcharts.js"></script>
 		<script src="js/BPAndPulse.js"></script>
+		<script src="js/regularModel.js"></script>
 	
 	</head>
 	<body>
@@ -17,7 +18,7 @@
 
 
 		<div id = 'box'>
-			<div class="subTitle">mHealth > 健康紀錄 > 飲食紀錄</div>
+			<div class="subTitle">mHealth > 健康紀錄 > 體重預測</div>
 			<div style="width: 100%;height:95%;" id='food'></div>
 
 		</div>

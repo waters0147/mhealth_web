@@ -10,6 +10,13 @@ td {
 	font-size: 30px;
 
 }
+.tableBox{
+	height: 900px;
+	width: auto;
+	margin-left:300px;
+	margin-top:25px;
+	margin-bottom: 25px;
+}
 
 .foodImg{
 	height: 150px;

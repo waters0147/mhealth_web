@@ -15,7 +15,7 @@
 			include("PrototypeLeftBar.php");
 		?>	
 		<div id = 'box' style="display: inline-block;">
-			<div class="subTitle">mHealth > 健康紀錄 > 飲食紀錄</div>
+			<div class="subTitle">mHealth > 健康紀錄 > 體重預測</div>
 			<div style="width: 100%;height:95%;" id='weightPredict'></div>	
 		</div>
 		<div style="display: inline-block;position: absolute;top:19.5%;margin-left: 70px;">

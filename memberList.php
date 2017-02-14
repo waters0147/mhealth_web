@@ -56,7 +56,7 @@
 						</thead>
 						<tbody>
 							<?php
-								$sql = $db->query("SELECT * FROM user");
+								$sql = $db->query("SELECT t1.* FROM user t1 WHERE t1.addedTime = (SELECT MAX(t2.addedTime) FROM user t2 WHERE t2.id = t1.id)" );
 								foreach($sql as $key=>$value){
 									echo 
 									'<tr>

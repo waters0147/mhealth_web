@@ -29,11 +29,29 @@
 }
 #chartBox{
 	margin-top:10px;
-	height:650px;
+	height:65%;
 	width: 100%;
 }
 .chart{
 	float: left;
 	height:100%;
 	width: 50%;
+}
+
+.loseWeight{
+	margin-left: 15px;
+	margin-top: 70px;
+}
+
+td.tableContent{
+	width: 35%;
+	border: 1px solid black;
+	background-color: #f2faca;
+	color:#0066cc;
+	text-align: center;
+	vertical-align: middle;
+	font-size: 18px;
+}
+input{
+	line-height: 50px;
 }

@@ -1,5 +1,6 @@
 .menu{
 	position: absolute;
+	display: block;
 	left: 0px;
 	background-color: #E0E0E0;
 	width: 300px;

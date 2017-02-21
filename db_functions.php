@@ -26,14 +26,14 @@ class dbFunction{
 	}
 
 	public function getBPP($id,$db){
-		$statement = $db->query("SELECT * FROM health  WHERE userId=$id ORDER BY date ASC");
+		$statement = $db->query("SELECT * FROM health  WHERE userId=$id ORDER BY recordedDate ASC");
 		if($statement){
 			foreach ($statement as $key=>$value) {
 			$result[$key] = array(
 				"systolic"=>$value['systolic'],
 				"diastolic"=>$value['diastolic'],
 				"pulse"=>$value['pulse'],
-				"date"=>$value['date']);
+				"date"=>$value['recordedDate']);
 			}
 
 			echo json_encode($result);
@@ -44,12 +44,12 @@ class dbFunction{
 	}
 
 	public function getFoodRecord($id,$db){
-		$statement = $db->query("SELECT * FROM food WHERE id=$id ORDER BY time ASC");
+		$statement = $db->query("SELECT * FROM food WHERE userId=$id ORDER BY recordedTime ASC");
 		if($statement){
 			foreach ($statement as $key=>$value) {
 			$result[$key] = array(
 				"calories"=>$value['calories'],
-				"time"=>$value['time'],
+				"time"=>$value['recordedTime'],
 				"name"=>$value['name']);
 			}
 
@@ -61,7 +61,7 @@ class dbFunction{
 	}
 
 	public function getWaterRecord($id,$db){
-		$statement = $db->query("SELECT SUM(drunkwater) as water,Date(date) as wholeDay FROM health WHERE (userId=$id) AND (drunkwater!=0) GROUP BY wholeDay");
+		$statement = $db->query("SELECT SUM(drunkwater) as water,Date(recordedDate) as wholeDay FROM health WHERE (userId=$id) AND (drunkwater!=0) GROUP BY wholeDay");
 		if($statement){
 			foreach ($statement as $key=>$value) {
 			$result[$key] = array(
@@ -110,12 +110,12 @@ class dbFunction{
 	}
 
 	public function getTempuratureRecord($id,$db){
-		$statement = $db->query("SELECT tempurature,date FROM health WHERE (userId=$id) AND (tempurature!=0)");
+		$statement = $db->query("SELECT tempurature,recordedDate FROM health WHERE (userId=$id) AND (tempurature!=0)");
 		if($statement){
 			foreach ($statement as $key => $value) {
 				$result[$key] = array(
 					"tempurature"=>$value['tempurature'],
-					"day"=>$value['date']);
+					"day"=>$value['recordedDate']);
 			}
 			echo json_encode($result);
 		}
@@ -179,7 +179,67 @@ class dbFunction{
 	}
 
 
+	public function getCalendarRecord($id,$db,$data){		
+		$offset = date('Y/m/d', strtotime($data. ' + 30 days'));
+		$pre = "'".$data."'";
+		$post = "'".$offset."'";
+		$statement = $db->query("SELECT image,recordedTime FROM food 
+			WHERE (userId=$id) AND (recordedTime BETWEEN $pre and $post)");
+		
+		if($statement){
+			foreach ($statement as $key => $value) {
+				$result[$key] = array(
+					"image"=>$value['image'],
+					"recordedTime"=>$value['recordedTime']);
+			}
+			if(isset($result)){			
+				echo json_encode($result);
+			}
+		}
+		else{
+			echo json_encode("getCalendarRecord() error");
+		}
+	}
 
+
+	public function getFoodDetail($id,$db,$data){		
+		$pre = "'".$data."'";
+		$statement = $db->query("SELECT * FROM food 
+			WHERE (userId=$id) AND (Date(recordedTime) = $pre )");
+		
+		if($statement){
+			foreach ($statement as $key => $value) {
+				$result[$key] = array(
+					"name"=>$value['name'],
+					"calories"=>$value['calories'],
+					"recordedTime"=>$value['recordedTime']);
+			}
+			if(isset($result)){			
+				echo json_encode($result);
+			}
+		}
+		else{
+			echo json_encode("getCalendarRecord() error");
+		}
+	}
+
+	public function getWaterPoint($id,$db,$pointDate){
+		$PD = "'".$pointDate."'";
+		$statement = $db->query("SELECT drunkwater,recordedDate FROM health 
+			WHERE (userId = $id) AND (Date(recordedDate) = $PD) AND(drunkwater!=0)");
+		if($statement){
+			foreach ($statement as $key=>$value) {
+			$result[$key] = array(
+				"drunkwater"=>$value['drunkwater'],
+				"recordedDate"=>$value['recordedDate']);
+			}
+
+			echo json_encode($result);
+		}
+		else{
+			echo json_encode("getWaterPoint() error");
+		}
+	}
 
 
 

@@ -1,6 +1,6 @@
+var url = window.location.href.toString().split("/");
+var chatacter = url[url.length-1];
 $(document).ready(function(){
-    var url = window.location.href.toString().split("/");
-    var chatacter = url[url.length-1];
 
     $.ajax({
         url:'queryDB.php',
@@ -350,6 +350,39 @@ function drawWaterChart(drunkRecord){
                 text: 'Y-value'
             },
             
+        },
+        plotOptions: {
+            series: {
+                cursor: 'pointer',
+                point: {
+                    events: {
+                        click: function (e) {
+                            var date = new Date(this.x);
+                            console.log(date.toLocaleDateString());
+                            
+                            $.ajax({
+                                url:'HCPointClick.php',
+                                type:'GET',
+                                data:{
+                                    action:chatacter,
+                                    pointDate:date.toLocaleDateString()
+                                },
+                                dataType:'json',
+                                success:function(result){
+                                    console.log("SUCCESS");
+                                    console.log(result);
+                                    
+                                },
+                                error:function(xhr, status, error){
+                                    console.log("FAILED");
+                                    console.log(xhr.responseText);
+
+                                }
+                            });
+                        }
+                    }
+                }
+            }
         },
         series: [{       
             name:'水',

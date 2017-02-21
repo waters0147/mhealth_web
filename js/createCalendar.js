@@ -1,5 +1,6 @@
 var dateObj = new Date();
-
+var _firstDay;
+var flag = 0;
 $( document ).ready(function() {
     	
     // calendar div中的html部分
@@ -7,25 +8,10 @@ $( document ).ready(function() {
     // 表格中顯示日期
     showCalendarData();
     // 绑定事件
-    bindEvent();
-
-    $.ajax({
-    	url:'getFileList.php',
-    	type:'GET',
-    	dataType:'json',
-    	success:function(result){
-    		setImage(result);
-    	},
-    	error:function(xhr, status, error){
-            alert(xhr.responseText);
-
-        }
-    });
-
-
-
-
+    bindEvent();  
+ 
 });
+
 function renderHtml() {
 
     var calendar = document.getElementById("calendar");
@@ -73,7 +59,12 @@ function renderHtml() {
 
 
 function showCalendarData() {
-
+	var _imgs = document.getElementsByName("foodImg");
+	for(var i=0;i<_imgs.length;++i){
+		document.getElementsByName("foodImg")[i].removeAttribute("src");
+		document.getElementsByName("foodImg")[i].removeAttribute("onclick");
+		document.getElementsByName("foodImg")[i].style.visibility = 'hidden';
+	}
     var _year = dateObj.getFullYear();
     var _month = dateObj.getMonth() + 1;
     var _dateStr = getDateStr(dateObj);
@@ -86,16 +77,17 @@ function showCalendarData() {
     // set td number
     var _table = document.getElementById("calendarTable");
     var _tds = document.getElementsByName("dFont");
-    var _imgs = document.getElementsByName("foodImg");
+    
     var border = _table.getElementsByTagName("td");
-    var _firstDay = new Date(_year, _month - 1, 1);    // first day of this month
+    _firstDay = new Date(_year, _month - 1, 1);    // first day of this month
     for(var i = 0; i < _tds.length; i++) {
-    	_imgs[i].setAttribute("id","T"+i);
+
         var _thisDay = new Date(_year, _month - 1, i + 1 - _firstDay.getDay());
         var _thisDayStr = getDateStr(_thisDay);
         _tds[i].innerText = _thisDay.getDate();
         //_tds[i].data = _thisDayStr;
         _tds[i].setAttribute('data', _thisDayStr);
+        _imgs[i].setAttribute("id","T"+i);
         if(_thisDayStr == getDateStr(new Date())) {        
             _tds[i].className = 'currentDay';
         }else if(_thisDayStr.substr(0, 6) == getDateStr(_firstDay).substr(0, 6)) {
@@ -104,11 +96,29 @@ function showCalendarData() {
         }else {        // other month
             _tds[i].className = 'otherMonth';
             border[i].style.borderStyle = 'none';
-            console.log(_imgs[i].getAttribute("id"));
             document.getElementById("T"+i).style.visibility = 'hidden';
 
         }
     }
+    var date2ISO = _firstDay.toLocaleDateString();
+    $.ajax({
+    	url:'getFileList.php',
+    	type:'GET',
+    	data:{
+    		firstDay:date2ISO,
+    		flag:flag
+    	},
+    	dataType:'json',
+    	success:function(result){
+    		console.log("SUCCESS");
+    		setImage(result);
+    	},
+    	error:function(xhr, status, error){
+    		console.log("FAILED");
+            console.log(xhr.responseText);
+
+        }
+    });
 }
 //綁定onclick event
 function bindEvent() {
@@ -126,18 +136,7 @@ function bindEvent() {
 function toPrevMonth() {
     dateObj = new Date(dateObj.getFullYear(),dateObj.getMonth() - 1,1);
     showCalendarData(dateObj);
-    $.ajax({
-    	url:'getFileList.php',
-    	type:'GET',
-    	dataType:'json',
-    	success:function(result){
-    		setImage(result);
-    	},
-    	error:function(xhr, status, error){
-            alert(xhr.responseText);
-
-        }
-    });
+    
 
 }
 
@@ -165,22 +164,74 @@ function getDateStr(date) {
 
 
 function setImage(result){
-
-	var dFont = document.getElementsByName('dFont');
-	var foodImg = document.getElementsByName("foodImg");
-	for(i=0;i<dFont.length;++i){
-		for(j=0;j<result.length;j++){
-			if(getImagePrefix(j,result)==dFont[i].getAttribute("data")){
-				foodImg[i].setAttribute("src","./808234765943569/"+result[j]);
-				
-			}
+	var _tds = document.getElementsByName("dFont");
+    var _imgs = document.getElementsByName("foodImg");
+	for(i=0;i<_tds.length;++i){
+		for(j=0;j<Object.keys(result).length;++j){
+			var str = result[j].recordedTime.substring(0,10).replace(/-/g,"");
+		    if(str == _tds[i].getAttribute("data")){
+		    	_imgs[i].setAttribute("src","data:image/jpeg;base64,"+result[j].image);
+		    	_imgs[i].style.visibility = 'visible';
+		    	_imgs[i].setAttribute("onclick","showFoodDetail("+str+");");
+		    }
 		}
-
 	}
-
+	
 }
 
 
-function getImagePrefix(index,result){
-	return result[index].substr(0,result[index].indexOf('_'));
+function showFoodDetail(data){
+	flag=1;
+	$.ajax({
+    	url:'getFileList.php',
+    	type:'GET',
+    	data:{
+    		firstDay:data,
+    		flag:flag
+    	},
+    	dataType:'json',
+    	success:function(result){
+			var modal = document.getElementById('myModal');
+			// open the modal 
+			showFoodDetailTable(result);
+			modal.style.display = "block";
+			// Get the <span> element that closes the modal
+			var span = document.getElementsByClassName("close")[0];
+			// When the user clicks on <span> (x), close the modal
+			span.onclick = function() {
+			    modal.style.display = "none";
+			    var table = document.getElementById("foodDetailList");
+			    var rowCount = table.rows.length;
+				for (var x=rowCount-1; x>0; x--) {
+				   table.deleteRow(x);
+				}
+
+			}
+    	},
+    	error:function(xhr, status, error){
+    		console.log("FAILED");
+            alert(xhr.responseText);
+
+        }
+    });
+
+
+
+    function showFoodDetailTable(result){
+    	var modal = document.getElementById('myModal');
+    	var table = document.getElementById("foodDetailList");
+    	for(i=0;i<Object.keys(result).length;i++){
+            var row = table.insertRow(i+1);
+            var cell0 = row.insertCell(0);
+	    	var cell1 = row.insertCell(1);
+	    	var cell2 = row.insertCell(2);
+	    	var cell3 = row.insertCell(3);
+	    	cell0.innerHTML = i;
+	    	cell1.innerHTML = result[i].name;
+	    	cell2.innerHTML = result[i].calories;
+	    	cell3.innerHTML = result[i].recordedTime;
+	    	
+        }
+    }
 }
+

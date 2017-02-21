@@ -4,5 +4,5 @@ function fitnessToggle()
 }
 function calendarToggle()
 {
-	$(".calendar").slideToggle( "slow" );
+	$(".foodCalendar").slideToggle( "slow" );
 }

@@ -12,11 +12,11 @@
 		<div class="menu">
 			<div style="padding-top: 30px;">
 		    	<ul class="menuUl">
-		        	<li class="liTitle" id="1" style="cursor: pointer;cursor: hand;">首頁</li>
-		        	<a href="foodCalendar.php"><li class="calendar" style="display:none;">Food Calendar</li></a>
+		        	<li class="liTitle" id="calendarLi1" style="cursor: pointer;cursor: hand;">首頁</li>
+		        	<a href="foodCalendar.php"><li class="foodCalendar" style="display:none;">Food Calendar</li></a>
 		      	</ul>
 		      	<ul class="menuUl">
-		        	<li class="liTitle" id="2" style="cursor: pointer;cursor: hand;">健康紀錄</li>
+		        	<li class="liTitle" id="calendarLi2" style="cursor: pointer;cursor: hand;">健康紀錄</li>
 		        	<a href="foodRecord.php"><li class="fitness" style="display:none;">飲食紀錄</li></a>
 		        	<a href="weightPredict.php"><li class="fitness" style="display:none;">體重預測</li></a>
 		        	<a href="loseWeight.php"><li class="fitness" style="display:none;">減重紀錄</li></a>
@@ -32,8 +32,8 @@
 	      	</div>
 
 	      	<script>
-	      		$('#1').click(calendarToggle);
-	      		$('#2').click(fitnessToggle);
+	      		$('#calendarLi1').click(calendarToggle);
+	      		$('#calendarLi2').click(fitnessToggle);
 	      	</script>
     	</div>
 

@@ -10,6 +10,21 @@
 			}
 
 		</style>
+		<script>
+		function validateForm(){
+			var letterNumber = /^[0-9a-zA-Z]+$/i;
+			var accVal = document.getElementById("acc").value;
+			var pwdVal = document.getElementById("pwd").value;
+			if(letterNumber.test(accVal) && letterNumber.test(pwdVal)){
+				return true;
+			}
+			else{
+				alert("type validate text");
+				return false;
+			}
+		}
+			
+		</script>
 	</head>
 	<body>
 		<?php
@@ -17,7 +32,7 @@
 			include("PrototypeLeftBar.php");
 		?>	
 		<div class="overlay"></div>
-		<form name="form" method="post" action="connectSession.php">
+		<form name="form" method="post" action="connectSession.php" onsubmit="return validateForm()">
 			<div class="login">
 				<div>
 					<div class="loginFont">Welcome! Please Sign In</div>

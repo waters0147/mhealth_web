@@ -323,6 +323,7 @@ class dbFunction{
 		echo json_encode(array_merge($resultCal,$resultSport));
 	}
 
+
 	public function getNonAccPoint($id,$db,$pointDate){
 		$PD = "'".$pointDate."'";
 		$statSport = $db->query("SELECT name as sportName,SUM(expenditure) as expenditure,FROM_UNIXTIME(id/1000) as recordedTime 
@@ -355,10 +356,6 @@ class dbFunction{
 			echo json_encode($resultFood);	
 		}
 	}
-
-
-
-
 
 }
 

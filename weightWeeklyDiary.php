@@ -18,6 +18,11 @@
 				<div style="margin-top:5px;">建議您，想要維持體態，最好的方式莫過於買個電子體重計，每天『跳』上去量一量，今天重了，明天就要少吃一點，斤斤要計較!邀請您加入『天天量體重』的行列!和我們一起掌控體重，掌握健康!</div>
 				
 			</div>
+			<select style="visibility: hidden;" onchange="reDraw(this)">
+				<option value="defaultTotal">預設全部</option>
+				<option value="monthly">月平均</option>
+				<option value="weekly">週平均</option>
+			</select>
 			<div id="chartBox" style="margin-top: 10px;height:80%;">
 					<div class="chart" id='weight'></div>
 					<div class="chart" id='bmi'></div>

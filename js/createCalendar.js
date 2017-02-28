@@ -101,6 +101,7 @@ function showCalendarData() {
         }
     }
     var date2ISO = _firstDay.toLocaleDateString();
+    flag = 0;
     $.ajax({
     	url:'getFileList.php',
     	type:'GET',
@@ -114,8 +115,10 @@ function showCalendarData() {
     		setImage(result);
     	},
     	error:function(xhr, status, error){
-    		console.log("FAILED");
-            console.log(xhr.responseText);
+    		console.log("FAILED");    
+            console.log("XHR = "+xhr.responseText);
+            console.log("STATUS = "+status);
+            console.log("ERROR = "+error);
 
         }
     });
@@ -191,6 +194,7 @@ function showFoodDetail(data){
     	},
     	dataType:'json',
     	success:function(result){
+            console.log(result);
 			var modal = document.getElementById('myModal');
 			// open the modal 
 			showFoodDetailTable(result);
@@ -226,10 +230,31 @@ function showFoodDetail(data){
 	    	var cell1 = row.insertCell(1);
 	    	var cell2 = row.insertCell(2);
 	    	var cell3 = row.insertCell(3);
+            var cell4 = row.insertCell(4);
 	    	cell0.innerHTML = i;
 	    	cell1.innerHTML = result[i].name;
-	    	cell2.innerHTML = result[i].calories;
-	    	cell3.innerHTML = result[i].recordedTime;
+            switch(result[i].meal){
+                case '0':
+                    cell2.innerHTML = "早餐";
+                    break;
+                case '1':
+                    cell2.innerHTML = "午餐";
+                    break;
+                case '2':
+                    cell2.innerHTML = "晚餐";
+                    break;
+                case '3':
+                    cell2.innerHTML = "點心";
+                    break;
+                case '4':
+                    cell2.innerHTML = "宵夜";
+                    break;
+                case '5':
+                    cell2.innerHTML = "其他";
+                    break;
+            }
+	    	cell3.innerHTML = result[i].calories;
+	    	cell4.innerHTML = result[i].recordedTime;
 	    	
         }
     }

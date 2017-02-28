@@ -16,9 +16,15 @@
 		?>	
 		<div id = 'box' style="display: inline-block;">
 			<div class="subTitle">mHealth > 健康紀錄 > 體重預測</div>
-			<div style="width: 100%;height:95%;" id='weightPredict'></div>	
+			<div>
+				<select onchange="reDraw(this);">
+					<option value="acc">累積圖</option>
+					<option value="nonacc">非累積圖</option>
+				</select>
+			</div>
+			<div style="width: 100%;height:90%;" id='weightPredict'></div>	
 		</div>
-		<div style="display: inline-block;position: absolute;top:19.5%;margin-left: 70px;">
+		<div style="display: inline-block;position: absolute;top:19.5%;margin-left: 70px;" id="predictDiv">
 			<label for="targetWeight">目標體重:</label>
 			<div><input type="text" class="form-control" name="targetWeight" id="targetWeight"></div>
 			<label >完成目標天數:</label>
@@ -31,6 +37,7 @@
 
 
 		<?php
+			include("MODAL.php");
 			include("PrototypeFooter.php");
 		?>	
 	</body>

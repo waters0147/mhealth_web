@@ -6,7 +6,6 @@
 		<script src="js/FBFunctions.js"></script>
 		<script src="http://code.highcharts.com/highcharts.js"></script>
 		<script src="js/BPAndPulse.js"></script>
-		<script src="js/regularModel.js"></script>
 	
 	</head>
 	<body>
@@ -19,12 +18,20 @@
 
 		<div id = 'box'>
 			<div class="subTitle">mHealth > 健康紀錄 > 飲食紀錄</div>
-			<div style="width: 100%;height:95%;" id='food'></div>
+			<div>
+				<select onchange="reDraw(this);">
+					<option value="defaultTotal">預設全部</option>
+					<option value="monthly">月平均</option>
+					<option value="weekly">週平均</option>
+				</select>
+			</div>
+			<div style="width: 100%;height:90%;" id='food'></div>
 
 		</div>
 
 
 		<?php
+			include("MODAL.php");
 			include("PrototypeFooter.php");
 		?>	
 	</body>

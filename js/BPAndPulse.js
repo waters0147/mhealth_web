@@ -1,11 +1,16 @@
 var url = window.location.href.toString().split("/");
 var chatacter = url[url.length-1];
+
 $(document).ready(function(){
 
+    var selecter = document.getElementsByTagName('select');
     $.ajax({
         url:'queryDB.php',
         type:'GET',
-        data:{action:chatacter},
+        data:{
+            action:chatacter,
+            selectType:selecter[0].value
+        },
         dataType:'json',
         success:function(result){
             console.log('success');
@@ -26,22 +31,14 @@ $(document).ready(function(){
                     break;
             
                 case 'foodRecord.php':
-
                     var food = new Array();
                     for(i=0;i<Object.keys(result).length;i++){
-                        //var time = result[i].time;
-                        //var data = new Object();
-                        //highChart部分會少八小時，故強制加八小      
-                        //data.Time=Date.parse(time)+1000*60*60*8;
-                        //data.Calories=parseInt(result[i].calories);
-                        //data.Name=result[i].name;                        
-                        //food[i] = data;
+                        //highChart部分會少八小時，故強制加八小 
                         var time = result[i].time;
-                        food[i] = [Date.parse(time)+1000*60*60*8,parseInt(result[i].calories),result[i].name];
-
+                        food[i] = [Date.parse(time)+1000*60*60*8,parseInt(result[i].calories)];
                     }
 
-                    console.log(food);
+                    //console.log(food);
                     drawFoodRecordChart(food);
                     break;
 
@@ -116,7 +113,7 @@ function drawBPChart(sys,dias) {
             text: '血壓'
         },
         xAxis: {
-            type:'datetime'
+            type:'datetime',
         },
         yAxis: {
             title: {
@@ -207,6 +204,54 @@ function drawFoodRecordChart(foodRecord) {
                 text: 'Y-value'
             },
             
+        },
+        plotOptions: {
+            series: {
+                cursor: 'pointer',
+                point: {
+                    events: {
+                        click: function (e) {
+                            var date = new Date(this.x);
+                            console.log(date.toLocaleDateString());
+                            
+                            $.ajax({
+                                url:'HCPointClick.php',
+                                type:'GET',
+                                data:{
+                                    action:chatacter,
+                                    pointDate:date.toLocaleDateString()
+                                },
+                                dataType:'json',
+                                success:function(result){
+                                    console.log("SUCCESS");
+                                    var modal = document.getElementById('myModal');
+                                    // open the modal 
+                                    showFoodDetailTable(result);
+                                    modal.style.display = "block";
+                                    // Get the <span> element that closes the modal
+                                    var span = document.getElementsByClassName("close")[0];
+                                    // When the user clicks on <span> (x), close the modal
+                                    span.onclick = function() {
+                                        modal.style.display = "none";
+                                        var table = document.getElementById("foodDetailList");
+                                        var rowCount = table.rows.length;
+                                        for (var x=rowCount-1; x>0; x--) {
+                                           table.deleteRow(x);
+                                        }
+
+                                    }
+                                    
+                                },
+                                error:function(xhr, status, error){
+                                    console.log("FAILED");
+                                    console.log(xhr.responseText);
+
+                                }
+                            });
+                        }
+                    }
+                }
+            }
         },
         series: [{
             name: 'calories',         
@@ -433,4 +478,138 @@ function getCookie(cname) {
         }
     }
     return "";
+
+}
+
+
+function reDraw(selecterType){
+    
+    $.ajax({
+        url:'queryDB.php',
+        type:'GET',
+        data:{
+            action:chatacter,
+            selectType:selecterType.value
+        },
+        dataType:'json',
+        success:function(result){
+            console.log('success');
+            console.log(result);
+            switch (chatacter){
+                case 'BPAndPulse.php':
+                    var systolic = [];
+                    var diastolic = [];
+                    var pulse = [];
+                    for(i=0;i<Object.keys(result).length;i++){
+                        var date = result[i].date;
+                        systolic[i] = [Date.parse(date),parseInt(result[i].systolic)];
+                        diastolic[i] = [Date.parse(date),parseInt(result[i].diastolic)];
+                        pulse[i] = [Date.parse(date),parseInt(result[i].pulse)];
+                    }
+                    drawBPChart(systolic,diastolic);
+                    drawPulseChart(pulse);
+                    break;
+            
+                case 'foodRecord.php':
+                    var food = new Array();
+                    for(i=0;i<Object.keys(result).length;i++){
+                        //highChart部分會少八小時，故強制加八小 
+                        var time = result[i].time;
+                        food[i] = [Date.parse(time)+1000*60*60*8,parseInt(result[i].calories),result[i].name];
+
+                    }
+                    drawFoodRecordChart(food);
+                    break;
+
+                case 'waterDiary.php':
+                    var drunkWater = new Array();
+                    for(i=0;i<Object.keys(result).length;i++){
+                        drunkWater[i] = [Date.parse(result[i].date),parseInt(result[i].drunkwater)];
+                    }
+                    drawWaterChart(drunkWater);
+                    break;
+
+                case 'sportDiary.php':
+                    var spEx = new Array();
+                    var spTime = new Array();
+                    for(i=0;i<Object.keys(result).length;i++){
+                        spEx[i]=[Date.parse(result[i].day),parseInt(result[i].spEx)]; 
+                        spTime[i]=[Date.parse(result[i].day),parseInt(result[i].spTime)]; 
+
+                    }
+                    drawSportExRecordChart(spEx);
+                    drawSportTimeRecordChart(spTime);
+                    break;
+                case 'weightWeeklyDiary.php':
+                    var weight = new Array();
+                    var bmi = new Array();
+                    for(i=0;i<Object.keys(result).length;i++){
+                        var d = new Date(parseInt(result[i].time));
+                        weight[i]=[Date.parse(d)+1000*60*60*8,parseInt(result[i].weight)];
+                        var computeBMI = parseInt(result[i].weight)/Math.pow(parseInt(result[i].height)/100,2);
+                        bmi[i] = [Date.parse(d)+1000*60*60*8,computeBMI];
+                    }
+                    drawWeightChart(weight);
+                    drawBMIChart(bmi);
+                    break;
+
+                case 'bodyTemperature.php':
+                    var tmp = new Array();
+                    for(i=0;i<Object.keys(result).length;i++){
+                        console.log(typeof result[i].tempurature);
+                        tmp[i] = [Date.parse(result[i].day)+1000*60*60*8,parseInt(result[i].tempurature)];
+                    }
+                    drawTempuratureChart(tmp);                    
+                    break;
+
+
+
+            }
+
+
+        },
+        error:function(xhr, status, error){
+            alert(xhr.responseText);
+
+        }
+    });
+}
+
+
+function showFoodDetailTable(result){
+    var modal = document.getElementById('myModal');
+    var table = document.getElementById("foodDetailList");
+    for(i=0;i<Object.keys(result).length;i++){
+        var row = table.insertRow(i+1);
+        var cell0 = row.insertCell(0);
+        var cell1 = row.insertCell(1);
+        var cell2 = row.insertCell(2);
+        var cell3 = row.insertCell(3);
+        var cell4 = row.insertCell(4);
+        cell0.innerHTML = i;
+        cell1.innerHTML = result[i].name;
+        switch(result[i].meal){
+            case '0':
+                cell2.innerHTML = "早餐";
+                break;
+            case '1':
+                cell2.innerHTML = "午餐";
+                break;
+            case '2':
+                cell2.innerHTML = "晚餐";
+                break;
+            case '3':
+                cell2.innerHTML = "點心";
+                break;
+            case '4':
+                cell2.innerHTML = "宵夜";
+                break;
+            case '5':
+                cell2.innerHTML = "其他";
+                break;
+        }
+        cell3.innerHTML = result[i].calories;
+        cell4.innerHTML = result[i].recordedTime;
+        
+    }
 }

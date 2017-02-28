@@ -19,6 +19,11 @@
 				<div style="margin-top:5px; ">提醒您~少量而持續的運動對健康大有益處! 更讓人擁有好心情~~</div>
 				<div>趕快開始您的運動計畫，就從每日15分鐘開始，跟我們一起快樂運動趣!</div>
 			</div>
+			<select onchange="reDraw(this);">
+				<option value="defaultTotal">預設全部</option>
+				<option value="monthly">月平均</option>
+				<option value="weekly">週平均</option>
+			</select>
 			<div id="chartBox" style="margin-top:35px; ">
 					<!--畫運動圖-->
 					<div class="chart" id='sportTime'></div>

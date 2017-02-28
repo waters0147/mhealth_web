@@ -11,7 +11,8 @@
 	switch ($action) {
 		case 'BPAndPulse.php':			
 			break;	
-		case 'foodRecord.php':			
+		case 'foodRecord.php':	
+			$dbFunction->getFoodDetail($id,$db,$pointDate);		
 			break;
 		case 'waterDiary.php':
 			$dbFunction->getWaterPoint($id,$db,$pointDate);

@@ -22,6 +22,13 @@
 				<div style="margin-left: 20px;">「7」連續七天量測 「2」早上起床後、晚上睡覺前各量一次 。中風、心肌梗塞發病的高峰是清晨5點～早上10點，因此清晨量血壓較有意義，可反映夜間的血壓；另一個中風的危險時段是晚上，因此建議睡前也量一次血壓。
 				</div>
 			</div>
+			<div>
+				<select id="foodRecordSelect" name="foodRecordSelect" onchange="reDraw(this);">
+					<option value="defaultTotal">預設全部</option>
+					<option value="monthly">月平均</option>
+					<option value="weekly">週平均</option>
+				</select>
+			</div>
 			<div id="chartBox">
 					<div class="chart" id='BP'></div>
 					<div class="chart" id='Pulse'></div>

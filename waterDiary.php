@@ -17,8 +17,14 @@
 			<div class="paragram">
 				<div>人每天都需要補充大量的水分，每天至少需攝入的水量為 體重(KG)*30 毫升</div>
 				<div style="margin-top:5px; "></div>
-				<div id="weightParam"></div>
-				
+				<div id="weightParam"></div>				
+			</div>
+			<div>
+				<select onchange="reDraw(this);">
+					<option value="defaultTotal">預設全部</option>
+					<option value="monthly">月平均</option>
+					<option value="weekly">週平均</option>
+				</select>
 			</div>
 			
 			<div class = "chart" id='water' style="width:100%;height:85%;"></div>

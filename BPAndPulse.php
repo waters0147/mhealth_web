@@ -42,18 +42,6 @@
 						<div class="chart" id='Pulse'></div>
 				</div>
 			</div>
-
-			<div>
-				<select id="foodRecordSelect" name="foodRecordSelect" onchange="reDraw(this);">
-					<option value="defaultTotal">預設全部</option>
-					<option value="monthly">月平均</option>
-					<option value="weekly">週平均</option>
-				</select>
-			</div>
-			<div id="chartBox">
-					<div class="chart" id='BP'></div>
-					<div class="chart" id='Pulse'></div>
-			</div>
 		</div>
 
 		<?php include("PrototypeFooter.php"); ?>

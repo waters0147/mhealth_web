@@ -6,6 +6,7 @@
 		<script src="js/FBFunctions.js"></script>
 		<script src="http://code.highcharts.com/highcharts.js"></script>
 		<script src="js/BPAndPulse.js"></script>
+
 		<style>
 			html,body{
 				height: 100%;
@@ -13,7 +14,6 @@
 				width:100%;
 			}
 		</style>
-
 	</head>
 	<body>
 		
@@ -21,6 +21,7 @@
 			include("PrototypeHead.php");
 			include("PrototypeLeftBar.php");
 		?>	
+
 
 		<div style="height:100%;width:100%;" class="content">
 			<div id = 'box'>
@@ -34,8 +35,6 @@
 				</div>
 				<div style="width: 100%;height:90%;" id='food'></div>
 			</div>
-		</div>
-
 
 		<?php
 			include("MODAL.php");

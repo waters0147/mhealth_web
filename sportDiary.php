@@ -38,6 +38,7 @@
 						<div class="chart" id='sportExpenditure'></div>
 				</div>
 			</div>
+			
 		</div>
 
 		<?php include("PrototypeFooter.php"); ?>

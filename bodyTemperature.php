@@ -56,6 +56,14 @@
 				</select>
 				<div id="tempurature" style="margin-top: 10px;height:65%;"></div>
 			</div>
+
+			<select style="visibility: hidden;" onchange="reDraw(this)">
+				<option value="defaultTotal">預設全部</option>
+				<option value="monthly">月平均</option>
+				<option value="weekly">週平均</option>
+			</select>
+			<div id="tempurature" style="margin-top: 10px;height:65%;"></div>
+			
 		</div>
 		<?php include("PrototypeFooter.php"); ?>
 

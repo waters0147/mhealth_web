@@ -37,6 +37,7 @@
 				</div>
 			</div>
 		</div>
+		
 		<?php include("PrototypeFooter.php"); ?>
 
 		<!--<script type="text/javascript">

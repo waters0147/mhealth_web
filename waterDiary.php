@@ -19,6 +19,7 @@
 			include("PrototypeHead.php");
 			include("PrototypeLeftBar.php");			
 		?>
+
 		<div style="height:100%;width:100%;" class="content">
 			<div id='box'>
 				<div class="subTitle">mHealth > 健康紀錄 > 喝水日記</div>

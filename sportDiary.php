@@ -6,26 +6,38 @@
 		<script src="http://code.highcharts.com/highcharts.js"></script>
 		<script src="js/BPAndPulse.js"></script>
 	</head>
+	<style>
+		html,body{
+			height: 100%;
+			min-height: 100%;
+			width:100%;
+		}
+	</style>
 	<body>
 		<?php			
 			include("PrototypeHead.php");
 			include("PrototypeLeftBar.php");			
 		?>
-		<div id='box'>
-			<div class="subTitle">mHealth > 健康紀錄 > 運動日記</div>
-			<div class="paragram">
-				<div>運動的好處大家都知道，但要能真正體會! 唯有您開始運動!</div>
-				<div style="margin-top:5px; ">研究發現，只要每天運動15分鐘（每週約90分鐘的運動量）與不運動的人相比，可減少14%總死亡與10%癌症死亡、延長三年壽命。 之後，每增加15分的運動，又可減4%的死亡與1%癌症死亡 (國家家衛生研究院 溫啟邦教授)。</div>
-				<div style="margin-top:5px; ">提醒您~少量而持續的運動對健康大有益處! 更讓人擁有好心情~~</div>
-				<div>趕快開始您的運動計畫，就從每日15分鐘開始，跟我們一起快樂運動趣!</div>
+		<div style="height:100%;width:100%;" class="content">
+			<div id='box'>
+				<div class="subTitle">mHealth > 健康紀錄 > 運動日記</div>
+				<div class="paragram">
+					<div>運動的好處大家都知道，但要能真正體會! 唯有您開始運動!</div>
+					<div style="margin-top:5px; ">研究發現，只要每天運動15分鐘（每週約90分鐘的運動量）與不運動的人相比，可減少14%總死亡與10%癌症死亡、延長三年壽命。 之後，每增加15分的運動，又可減4%的死亡與1%癌症死亡 (國家家衛生研究院 溫啟邦教授)。</div>
+					<div style="margin-top:5px; ">提醒您~少量而持續的運動對健康大有益處! 更讓人擁有好心情~~</div>
+					<div>趕快開始您的運動計畫，就從每日15分鐘開始，跟我們一起快樂運動趣!</div>
+				</div>
+				<select onchange="reDraw(this);">
+					<option value="defaultTotal">預設全部</option>
+					<option value="monthly">月平均</option>
+					<option value="weekly">週平均</option>
+				</select>
+				<div id="chartBox" style="margin-top:35px; ">
+						<!--畫運動圖-->
+						<div class="chart" id='sportTime'></div>
+						<div class="chart" id='sportExpenditure'></div>
+				</div>
 			</div>
-			<div id="chartBox" style="margin-top:35px; ">
-					<!--畫運動圖-->
-					<div class="chart" id='sportTime'></div>
-					<div class="chart" id='sportExpenditure'></div>
-			</div>
-			
-
 		</div>
 
 		<?php include("PrototypeFooter.php"); ?>

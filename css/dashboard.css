@@ -1,0 +1,14 @@
+.title{
+	background-color: rgba(252, 252, 252, 0.89);
+	height:10%;
+	padding-top: 1.5%;
+	color:#414C59;
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.graph{
+	height:auto;
+	padding-top: 20px;
+	background-color: #F4F5F7;
+}

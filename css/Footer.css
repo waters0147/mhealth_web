@@ -1,9 +1,12 @@
 .page-footer{
-	clear: left;
+	clear: both;
 	position: relative;
-    bottom:0px;
+    right: 0;
+  	bottom: 0;
+  	left: 0;
     color: white;
     background-color: #333;
     height: 25px;
+    margin-top: -25px;
     width: 100%;
 }

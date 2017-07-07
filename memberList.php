@@ -2,7 +2,7 @@
 <html>
 <head>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="css/member.css">
+	<link rel="stylesheet" type="text/css" href="CSS/member.css">
 	<script src="js/FBFunctions.js"></script>
 </head>
 <body>
@@ -83,7 +83,7 @@
 	<script type="text/javascript">	
 		function showUser(userID){
 		      document.cookie = 'username='+userID;
-		      document.location.href='foodCalendar.php';
+		      document.location.href='dashboard.php';
 		}
 	</script>
 

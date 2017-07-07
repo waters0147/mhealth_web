@@ -15,15 +15,15 @@ var Slope;
 $(document).ready(function(){
    
 
-	$.ajax({
-		url:'queryDB.php',
+    $.ajax({
+        url:'queryDB.php',
         type:'GET',
         data:{action:chatacter},
         dataType:'json',
         success:function(result){
             var tmp = result.sort(function(a,b){return a.dayCal > b.dayCal ? 1:-1;});
             computeNet(result);  
-      		drawAcc(accumulateNet);
+            drawAcc(accumulateNet);
             addRegularLine();
 
             console.log(getCookie('averageCal'));
@@ -34,9 +34,9 @@ $(document).ready(function(){
             console.log("status = "+status);
             console.log("error = "+error);
         }
-	});
+    });
 
-	$('#analysis').click(function(){ 
+    $('#analysis').click(function(){ 
         var targetDay = parseInt(document.getElementById('targetFinishedDay').value);//user預計多久可以完成
         var targetWeight = parseInt(document.getElementById('targetWeight').value);//user理想體重
         predictDay = getTargetDay(targetWeight,YMean,Slope);//回歸預測
@@ -53,7 +53,7 @@ $(document).ready(function(){
             document.getElementById("intake").innerHTML = "平均攝取"+'</br>'+(1500-parseInt(Slope*-86400000))+'卡';
             document.getElementById("analy").innerHTML = "預計"+'</br>'+predictDay+'天';
         }
-	});
+    });
 
     $('#suggest').click(function(){
         var targetDay = parseInt(document.getElementById('targetFinishedDay').value);//user預計多久可以完成
@@ -88,97 +88,97 @@ $(document).ready(function(){
 
 
 function calculateXMean(array){
-	var x=0;
-	for(var i=0;i<array.length;i++){
-		x+=(array[i][0]);
-	}
-	return x/array.length;
+    var x=0;
+    for(var i=0;i<array.length;i++){
+        x+=(array[i][0]);
+    }
+    return x/array.length;
 }
 function calculateYMean(array){
-	var y=0;
-	for(var i=0;i<array.length;i++){
-		y+=array[i][1];
-	}
-	return y/array.length;
+    var y=0;
+    for(var i=0;i<array.length;i++){
+        y+=array[i][1];
+    }
+    return y/array.length;
 }
 function calculateXYMean(array){
-	var xy=0;
-	for(var i=0;i<array.length;i++){
-		xy+=((array[i][0])*(array[i][1]));
-	}
-	return xy/array.length;
+    var xy=0;
+    for(var i=0;i<array.length;i++){
+        xy+=((array[i][0])*(array[i][1]));
+    }
+    return xy/array.length;
 }
 function getCov(XYMean,XMean,YMean){
-	return XYMean-XMean*YMean;
+    return XYMean-XMean*YMean;
 }
 function getVar(array,XMean){
-	var result = 0;
-	for(var i=0;i<array.length;i++){
-		result+=Math.pow(array[i][0]-XMean,2);
-	}
-	return result/array.length;
+    var result = 0;
+    for(var i=0;i<array.length;i++){
+        result+=Math.pow(array[i][0]-XMean,2);
+    }
+    return result/array.length;
 }
 function getPredictCal(XMean,YMean,Slope,x){
-	return YMean+Slope*(x-XMean);	
+    return YMean+Slope*(x-XMean);   
 }
 function getTargetDay(targetWeight,YMean,Slope){
-	var needLose = (getCookie("weight")-targetWeight)*-7700;
-	if(needLose-YMean>0){
-		for(var i =0;i<accumulateNet.length;++i){
-			if(accumulateNet[i][1]<needLose)
-				return i;
-		}
-	}
-	else{
-		var day = ((needLose-YMean)/Slope/86400000);
-		return Math.ceil(day);
-	}
+    var needLose = (getCookie("weight")-targetWeight)*-7700;
+    if(needLose-YMean>0){
+        for(var i =0;i<accumulateNet.length;++i){
+            if(accumulateNet[i][1]<needLose)
+                return i;
+        }
+    }
+    else{
+        var day = ((needLose-YMean)/Slope/86400000);
+        return Math.ceil(day);
+    }
 }
 
 function computeNet(result){
-	var combine =[];
-	for(var i=1;i<result.length;i++){
-		if(result[i].dayCal === result[i-1].dayCal){
-			result[i-1] = Object.assign({},result[i-1],result[i]);
-		}
-	}
-	combine.push(result[0]);
-	for(var i=1;i<result.length;i++){
-		combine.push(result[i]);
-		if(result[i].dayCal === result[i-1].dayCal){
-			combine.pop();
-		}
-	}
-	var sum = 0;
-	for(var i=combine.length-30;i<combine.length;i++){
-		
-		if(combine[i].hasOwnProperty('sumExp') && combine[i].hasOwnProperty('sumCal')){
-			sum+=(combine[i].sumCal-combine[i].sumExp-1500);
-			net.push(Array(Date.parse(combine[i].dayCal),combine[i].sumCal-combine[i].sumExp-1500));
-			accumulateNet.push(Array(Date.parse(combine[i].dayCal),sum));
-		}
-		else if(combine[i].hasOwnProperty('sumExp')){
-			sum+=(0-combine[i].sumExp-1500);
-			net.push(Array(Date.parse(combine[i].dayCal),0-combine[i].sumExp-1500));
-			accumulateNet.push(Array(Date.parse(combine[i].dayCal),sum));
-		}
-		else if(combine[i].hasOwnProperty('sumCal')){
-			sum+=(combine[i].sumCal-1500);
-			net.push(Array(Date.parse(combine[i].dayCal),combine[i].sumCal-1500));
-			accumulateNet.push(Array(Date.parse(combine[i].dayCal),sum));
-		}
-		else{
-			sum+=-1500;
-			net.push(Array(Date.parse(combine[i].dayCal),-1500));
-			accumulateNet.push(Array(Date.parse(combine[i].dayCal),sum));
-		}
-	}
-	
+    var combine =[];
+    for(var i=1;i<result.length;i++){
+        if(result[i].dayCal === result[i-1].dayCal){
+            result[i-1] = Object.assign({},result[i-1],result[i]);
+        }
+    }
+    combine.push(result[0]);
+    for(var i=1;i<result.length;i++){
+        combine.push(result[i]);
+        if(result[i].dayCal === result[i-1].dayCal){
+            combine.pop();
+        }
+    }
+    var sum = 0;
+    for(var i=combine.length-30;i<combine.length;i++){
+        
+        if(combine[i].hasOwnProperty('sumExp') && combine[i].hasOwnProperty('sumCal')){
+            sum+=(combine[i].sumCal-combine[i].sumExp-1500);
+            net.push(Array(Date.parse(combine[i].dayCal),combine[i].sumCal-combine[i].sumExp-1500));
+            accumulateNet.push(Array(Date.parse(combine[i].dayCal),sum));
+        }
+        else if(combine[i].hasOwnProperty('sumExp')){
+            sum+=(0-combine[i].sumExp-1500);
+            net.push(Array(Date.parse(combine[i].dayCal),0-combine[i].sumExp-1500));
+            accumulateNet.push(Array(Date.parse(combine[i].dayCal),sum));
+        }
+        else if(combine[i].hasOwnProperty('sumCal')){
+            sum+=(combine[i].sumCal-1500);
+            net.push(Array(Date.parse(combine[i].dayCal),combine[i].sumCal-1500));
+            accumulateNet.push(Array(Date.parse(combine[i].dayCal),sum));
+        }
+        else{
+            sum+=-1500;
+            net.push(Array(Date.parse(combine[i].dayCal),-1500));
+            accumulateNet.push(Array(Date.parse(combine[i].dayCal),sum));
+        }
+    }
+    
 
 }
 
 function drawAcc(accumulateNet){
-	predictChart = Highcharts.chart('weightPredict', {
+    predictChart = Highcharts.chart('weightPredict', {
         chart: {
             type: 'line'
         },
@@ -206,7 +206,7 @@ function drawAcc(accumulateNet){
             }]
         },
         series: [{
-        	type:'line',
+            type:'line',
             name: 'accumulateNet',
             data: accumulateNet
         }]
@@ -215,7 +215,7 @@ function drawAcc(accumulateNet){
 
 
 function drawNonAcc(Net){
-	predictChart = Highcharts.chart('weightPredict', {
+    predictChart = Highcharts.chart('weightPredict', {
         chart: {
             type: 'line'
         },
@@ -263,19 +263,19 @@ function drawNonAcc(Net){
                                 success:function(result){
                                     showNetDetailTable(result,date);
                                     var modal = document.getElementById('myModal');
-		                            // open the modal 
-		                            modal.style.display = "block";
-		                            // Get the <span> element that closes the modal
-		                            var span = document.getElementsByClassName("close")[0];
-		                            // When the user clicks on <span> (x), close the modal
-		                            span.onclick = function() {
-		                                modal.style.display = "none";
-		                                var table = document.getElementById("foodDetailList");
-		                                var rowCount = table.rows.length;
-		                                for (var x=rowCount-1; x>0; x--) {
-		                                   table.deleteRow(x);
-		                                }
-		                            }
+                                    // open the modal 
+                                    modal.style.display = "block";
+                                    // Get the <span> element that closes the modal
+                                    var span = document.getElementsByClassName("close")[0];
+                                    // When the user clicks on <span> (x), close the modal
+                                    span.onclick = function() {
+                                        modal.style.display = "none";
+                                        var table = document.getElementById("foodDetailList");
+                                        var rowCount = table.rows.length;
+                                        for (var x=rowCount-1; x>0; x--) {
+                                           table.deleteRow(x);
+                                        }
+                                    }
                                     
                                 },
                                 error:function(xhr, status, error){
@@ -291,7 +291,7 @@ function drawNonAcc(Net){
             }
         },
         series: [{
-        	type:'line',
+            type:'line',
             name: 'Net',
             data: Net
         }]
@@ -301,12 +301,12 @@ function drawNonAcc(Net){
 function reDraw(selecterType){
     var selectValue = selecterType.value;
     if(selectValue == "acc"){
-    	document.getElementById("predictDiv").style.visibility = 'visible';
-    	drawAcc(accumulateNet);
+        document.getElementById("predictDiv").style.visibility = 'visible';
+        drawAcc(accumulateNet);
     }
     else {
-    	document.getElementById("predictDiv").style.visibility = 'hidden';
-    	drawNonAcc(net);
+        document.getElementById("predictDiv").style.visibility = 'hidden';
+        drawNonAcc(net);
 
     }
 
@@ -314,35 +314,35 @@ function reDraw(selecterType){
 
 
 function showNetDetailTable(result,date){
-	console.log(result);
-	var table = document.getElementById("foodDetailList");
-	table.deleteTHead();
-	var header  = table.createTHead();
-	var headText = ["#","名稱","數值","紀錄時間"];
-	var rowHead = header.insertRow(0);
-	for(i=0;i<headText.length;++i){
-		var cellHead = rowHead.insertCell(i);
-		cellHead.innerHTML = headText[i];
-	}
-	var modal = document.getElementById('myModal');
+    console.log(result);
+    var table = document.getElementById("foodDetailList");
+    table.deleteTHead();
+    var header  = table.createTHead();
+    var headText = ["#","名稱","數值","紀錄時間"];
+    var rowHead = header.insertRow(0);
+    for(i=0;i<headText.length;++i){
+        var cellHead = rowHead.insertCell(i);
+        cellHead.innerHTML = headText[i];
+    }
+    var modal = document.getElementById('myModal');
     var table = document.getElementById("foodDetailList");
     for(i=0;i<result.length;++i){
-    	var row = table.insertRow(i+1);
+        var row = table.insertRow(i+1);
         var cell0 = row.insertCell(0);
         var cell1 = row.insertCell(1);
         var cell2 = row.insertCell(2);
         var cell3 = row.insertCell(3);
         cell0.innerHTML = i;
-    	if(result[i].hasOwnProperty('sportName')){
-    		cell1.innerHTML = result[i].sportName;
-    		cell2.innerHTML = Math.round(-parseInt(result[i].expenditure)*Math.pow(10,2))/Math.pow(10,2);
-    		cell3.innerHTML = result[i].recordedTime;
-    	}
-    	else{
-			cell1.innerHTML = result[i].foodName;
-	        cell2.innerHTML = result[i].calories;
-	        cell3.innerHTML = result[i].recordedTime;
-    	}            
+        if(result[i].hasOwnProperty('sportName')){
+            cell1.innerHTML = result[i].sportName;
+            cell2.innerHTML = Math.round(-parseInt(result[i].expenditure)*Math.pow(10,2))/Math.pow(10,2);
+            cell3.innerHTML = result[i].recordedTime;
+        }
+        else{
+            cell1.innerHTML = result[i].foodName;
+            cell2.innerHTML = result[i].calories;
+            cell3.innerHTML = result[i].recordedTime;
+        }            
     }
     var row = table.insertRow(-1);
     var cell0 = row.insertCell(0);
@@ -350,7 +350,7 @@ function showNetDetailTable(result,date){
     var cell2 = row.insertCell(2);
     var cell3 = row.insertCell(3);
     cell0.innerHTML = result.length;
-	cell1.innerHTML = "BMR";
+    cell1.innerHTML = "BMR";
     cell2.innerHTML = "-1500";
     cell3.innerHTML = date.toLocaleDateString();
 }

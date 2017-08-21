@@ -2,37 +2,40 @@
 	position: absolute;
 	display: block;
 	left: 0px;
-	background-color: #E0E0E0;
+	background-color: #77b0dd;
 	width: 300px;
 	height:100vh;
 }
 
 .menuUl{
-	background-color: #E0E0E0;
 	margin: 0;
-	margin-left: 5px;
-	width: 250px;
+	width: 100%;
 	text-align: center;
 	list-style-type: none;
+	padding: 0;
 }
 
 .liTitle{
-	background: linear-gradient(to right,#000079, #2894FF);	
 	color: white;
+	background-color: #286090;
+}
+.iClass{
+	
+}
+
+.fitness{
 
 }
 
 li{
-	background-color: white;
 	font-family:"微軟正黑體";
-	font-size: 18px;
+	font-size: 28px;
 	list-style-position:inside;
-    border-bottom: 1px solid #F0F0F0;
-    border-right: 1px solid #F0F0F0;
 	padding-top: 6px;
 	height: 40px; 
 	cursor: pointer;
 	cursor: hand;
+	color: white;
 }
 
 

@@ -25,8 +25,21 @@ class dbFunction{
 		}
 	}
 
-	public function getBPP($id,$db){
-		$statement = $db->query("SELECT * FROM health  WHERE userId=$id ORDER BY recordedDate ASC");
+	public function getBPP($id,$db,$selectType){
+		if($selectType === 'defaultTotal'){
+			$statement = $db->query("SELECT * FROM health  
+				WHERE (userId=$id) AND (systolic!=0) AND (diastolic!=0) AND (pulse!=0) 
+				ORDER BY recordedDate ASC");
+		}
+		else if($selectType === 'monthly'){
+			$statement = $db->query("SELECT AVG(systolic) as systolic,AVG(diastolic) as diastolic,AVG(pulse) as pulse,
+				CAST(DATE_FORMAT(recordedDate,'%y-%m-01') as Date) as recordedDate
+				FROM health WHERE (userId=$id) AND (systolic!=0) AND (diastolic!=0) AND (pulse!=0)  GROUP BY Year(recordedDate),Month(recordedDate)");
+		}
+		else{
+			$statement = $db->query("SELECT AVG(systolic) as systolic,AVG(diastolic) as diastolic,AVG(pulse) as pulse,recordedDate
+				FROM health WHERE (userId=$id) AND (systolic!=0) AND (diastolic!=0) AND (pulse!=0)  GROUP BY WEEK(recordedDate) ORDER BY recordedDate ASC");
+		}
 		if($statement){
 			foreach ($statement as $key=>$value) {
 			$result[$key] = array(
@@ -43,14 +56,24 @@ class dbFunction{
 		}
 	}
 
-	public function getFoodRecord($id,$db){
-		$statement = $db->query("SELECT * FROM food WHERE userId=$id ORDER BY recordedTime ASC");
+	public function getFoodRecord($id,$db,$selectType){
+		if($selectType === 'defaultTotal'){
+			$statement = $db->query("SELECT SUM(calories) as calories,Date(recordedTime) as wholeDay  
+				FROM food WHERE userId=$id GROUP BY wholeDay");
+		}
+		else if($selectType === 'monthly'){
+			$statement = $db->query("SELECT AVG(calories) as calories,
+				CAST(DATE_FORMAT(recordedTime,'%y-%m-01') as Date) as wholeDay,name 
+				FROM food WHERE userId=$id GROUP BY Year(wholeDay),Month(wholeDay)");
+		}
+		else{
+			$statement = $db->query("SELECT AVG(calories) as calories,recordedTime as wholeDay,name FROM food WHERE userId=$id GROUP BY Week(wholeDay) ORDER BY wholeDay ASC");
+		}
 		if($statement){
 			foreach ($statement as $key=>$value) {
 			$result[$key] = array(
 				"calories"=>$value['calories'],
-				"time"=>$value['recordedTime'],
-				"name"=>$value['name']);
+				"time"=>$value['wholeDay']);
 			}
 
 			echo json_encode($result);
@@ -60,8 +83,18 @@ class dbFunction{
 		}
 	}
 
-	public function getWaterRecord($id,$db){
-		$statement = $db->query("SELECT SUM(drunkwater) as water,Date(recordedDate) as wholeDay FROM health WHERE (userId=$id) AND (drunkwater!=0) GROUP BY wholeDay");
+	public function getWaterRecord($id,$db,$selectType){
+		if($selectType === 'defaultTotal'){
+			$statement = $db->query("SELECT SUM(drunkwater) as water,Date(recordedDate) as wholeDay FROM health WHERE (userId=$id) AND (drunkwater!=0) GROUP BY wholeDay");
+		}
+		else if($selectType === 'monthly'){
+			$statement = $db->query("SELECT SUM(drunkwater)/COUNT(DISTINCT Date(recordedDate)) as water,
+				CAST(DATE_FORMAT(recordedDate,'%y-%m-01') as Date) as wholeDay 
+				FROM health WHERE (userId=$id) AND (drunkwater!=0) GROUP BY wholeDay");
+		}
+		else{
+			$statement = $db->query("SELECT AVG(drunkwater) as water,Date(recordedDate) as wholeDay FROM health WHERE (userId=$id) AND (drunkwater!=0) GROUP BY Week(recordedDate)");/*週有錯*/
+		}
 		if($statement){
 			foreach ($statement as $key=>$value) {
 			$result[$key] = array(
@@ -76,8 +109,16 @@ class dbFunction{
 		}
 	}
 
-	public function getSportRecord($id,$db){
-		$statement = $db->query("SELECT Date(FROM_UNIXTIME(id/1000)) as day,SUM(expenditure) as spEx,SUM(totalTime) as spTime FROM sport WHERE userId=$id GROUP BY day");
+	public function getSportRecord($id,$db,$selectType){
+		if($selectType === 'defaultTotal'){
+			$statement = $db->query("SELECT Date(FROM_UNIXTIME(id/1000)) as day,SUM(expenditure) as spEx,SUM(totalTime) as spTime FROM sport WHERE userId=$id GROUP BY day");
+		}
+		else if($selectType === 'monthly'){
+			$statement = $db->query("SELECT Date(FROM_UNIXTIME(id/1000)) as day,AVG(expenditure) as spEx,AVG(totalTime) as spTime FROM sport WHERE userId=$id GROUP BY Month(day)");
+		}
+		else{
+			$statement = $db->query("SELECT Date(FROM_UNIXTIME(id/1000)) as day,AVG(expenditure) as spEx,AVG(totalTime) as spTime FROM sport WHERE userId=$id GROUP BY Week(day)");
+		}
 		if($statement){
 			foreach ($statement as $key=>$value) {
 			$result[$key] = array(
@@ -110,7 +151,7 @@ class dbFunction{
 	}
 
 	public function getTempuratureRecord($id,$db){
-		$statement = $db->query("SELECT tempurature,recordedDate FROM health WHERE (userId=$id) AND (tempurature!=0)");
+		$statement = $db->query("SELECT tempurature,recordedDate FROM health WHERE (userId=$id) AND (tempurature!=0) ORDER BY recordedDate");
 		if($statement){
 			foreach ($statement as $key => $value) {
 				$result[$key] = array(
@@ -212,6 +253,8 @@ class dbFunction{
 				$result[$key] = array(
 					"name"=>$value['name'],
 					"calories"=>$value['calories'],
+					"image"=>$value['image'],
+					"meal"=>$value['meal'],
 					"recordedTime"=>$value['recordedTime']);
 			}
 			if(isset($result)){			
@@ -240,6 +283,122 @@ class dbFunction{
 			echo json_encode("getWaterPoint() error");
 		}
 	}
+
+	/*public function getFoodPoint($id,$db,$pointDate){
+		$PD = "'".$pointDate."'";
+		$statement = $db->query("SELECT * FROM food 
+			WHERE (userId = $id) AND (Date(recordedTime) = $PD)");
+		if($statement){
+			foreach ($statement as $key=>$value) {
+			$result[$key] = array(
+				"drunkwater"=>$value['drunkwater'],
+				"recordedDate"=>$value['recordedDate']);
+			}
+
+			echo json_encode($result);
+		}
+		else{
+			echo json_encode("getWaterPoint() error");
+		}
+	}*/
+
+	public function getUserNetRecord($id,$db){
+		$statCal = $db->query("SELECT SUM(calories) as sumCal,Date(recordedTime) as dayCal 
+			FROM food WHERE userId=$id GROUP BY dayCal");
+		if($statCal){
+			foreach ($statCal as $key=>$value) {
+				$resultCal[$key] = array(
+					"sumCal"=>$value['sumCal'],
+					"dayCal"=>$value['dayCal']);
+			}
+		}
+		$statSport = $db->query("SELECT SUM(expenditure) as sumExp,Date(FROM_UNIXTIME(id/1000)) as dayCal 
+			FROM sport WHERE userId=$id GROUP BY dayCal ORDER BY dayCal");
+		if($statSport){			
+			foreach ($statSport as $key=>$value) {
+				$resultSport[$key] = array(
+					"sumExp"=>$value['sumExp'],
+					"dayCal"=>$value['dayCal']);
+			}			
+		}
+		//echo json_encode($resultSport);
+		echo json_encode(array_merge($resultCal,$resultSport));
+	}
+
+	public function getNonAccPoint($id,$db,$pointDate){
+		$PD = "'".$pointDate."'";
+		$statSport = $db->query("SELECT name as sportName,SUM(expenditure) as expenditure,FROM_UNIXTIME(id/1000) as recordedTime 
+			FROM sport WHERE (userId = $id) AND (Date(FROM_UNIXTIME(id/1000)) = $PD) GROUP BY sportName");
+		if($statSport){
+			foreach ($statSport as $key=>$value) {
+			$resultSport[$key] = array(
+				"sportName"=>$value['sportName'],
+				"expenditure"=>$value['expenditure'],
+				"recordedTime"=>$value['recordedTime']);
+			}			
+		}
+		$statFood = $db->query("SELECT name as foodName,calories,recordedTime FROM food 
+			WHERE (userId = $id) AND (Date(recordedTime) = $PD)");
+		if($statFood){
+			foreach ($statFood as $key=>$value) {
+			$resultFood[$key] = array(
+				"foodName"=>$value['foodName'],
+				"calories"=>$value['calories'],
+				"recordedTime"=>$value['recordedTime']);
+			}			
+		}
+		if(isset($resultSport) && isset($resultFood)){
+			echo json_encode(array_merge($resultSport,$resultFood));	
+		}	
+		else if(isset($resultSport)){
+			echo json_encode($resultSport);	
+		}
+		else if(isset($resultFood)){
+			echo json_encode($resultFood);	
+		}
+	}
+
+
+
+
+	public function testInsert($id,$db,$name,$calories,$meal,$dateString){
+		$nameString = "'".$name."'";
+		$mealString = "'".$meal."'";
+		$dateString = "'".$dateString."'";
+
+		$statSport = $db->query("INSERT INTO food(userId,name,calories,meal,recordedTime) 
+			VALUES ($id,$nameString,$calories,$mealString,$dateString)");
+		if($statSport){
+			echo "succcess";
+		}
+	}
+
+	public function setCookieUserSuggestion($id,$db){	
+		$stateEX = $db->query("SELECT name,SUM(totalTime) as sumValue,ROUND(SUM(expenditure)/SUM(totalTime),2) as unitEX from sport WHERE userId = $id GROUP BY name ORDER BY sumValue DESC LIMIT 1");
+		if($stateEX){
+			foreach ($stateEX as $value) {
+				setcookie("sportName",$value['name']);
+				setcookie("unitEX",$value['unitEX']);
+				//setcookie("TEST",urlencode("我是誰"));
+			}
+		}
+		else{
+			echo json_encode("setCookieUserSUGGESTION() error1");
+		}
+		$stateCal = $db->query("SELECT name as foodName,sum(calories) as sumCal,sum(calories)/count(name) as averageCal from(SELECT name,calories,recordedTime from food WHERE userId=$id ORDER BY recordedTime DESC LIMIT 30) as T GROUP BY name ORDER BY sumCal DESC LIMIT 1");
+		if($stateCal){
+			foreach ($stateCal as $value) {
+				setcookie("foodName",$value['foodName']);
+				setcookie("foodCal",$value['sumCal']);
+				setcookie("averageCal",$value['averageCal']);
+			}
+		}
+		else{
+			echo json_encode("setCookieUserSUGGESTION() error2");
+		}
+	}
+
+
 
 
 

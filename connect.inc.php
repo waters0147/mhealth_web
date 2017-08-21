@@ -1,6 +1,6 @@
 <?php
 
-$dsn = 'mysql:dbname=mhealth;host=140.114.88.136:3306;charset=utf8';
+$dsn = 'mysql:dbname=mhealth;host=140.114.88.144:3306;charset=utf8';
 $account='root';
 $psd='123456';
 global $db;

@@ -4,28 +4,30 @@
 	include 'db_functions.php';
 	$id = $_COOKIE['username'];
 	$dbFunction = new dbFunction;
-	$action = $_GET['action'];
-
-
+	if(isset($_GET['action'])){
+		$action = $_GET['action'];
+	}
 	
-	
+	if(isset($_GET['selectType'])){
+		$selectType = $_GET['selectType'];	
+	}
 	
 	switch ($action) {
 		case 'BPAndPulse.php':
-			$dbFunction->getBPP($id,$db);
+			$dbFunction->getBPP($id,$db,$selectType);
 			break;
 		
 		case 'foodRecord.php':
-			$dbFunction->getFoodRecord($id,$db);
+			$dbFunction->getFoodRecord($id,$db,$selectType);
 			break;
 
 		case 'waterDiary.php':
 			$dbFunction->setCookieUserData($id,$db);
-			$dbFunction->getWaterRecord($id,$db);
+			$dbFunction->getWaterRecord($id,$db,$selectType);
 			break;
 
 		case 'sportDiary.php':
-			$dbFunction->getSportRecord($id,$db);
+			$dbFunction->getSportRecord($id,$db,$selectType);
 			break;
 
 		case 'weightWeeklyDiary.php':
@@ -40,6 +42,11 @@
 		case 'updateLoseWeight.php':
 			$listID = $_COOKIE['listid'];
 			$dbFunction->getLostWeightRecord($id,$db,$listID);
+			break;
+		case 'weightPredict.php':
+			$dbFunction->setCookieUserData($id,$db);
+			$dbFunction->setCookieUserSuggestion($id,$db);
+			$dbFunction->getUserNetRecord($id,$db);		
 			break;
 	}
 

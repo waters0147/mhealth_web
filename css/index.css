@@ -9,9 +9,10 @@ span{
 	position: absolute; top: 50px; left: 0;
 	height: 100%;
 	width:100%;
-	background-color: black;
+	background-repeat:no-repeat;
+	background-image:url('../images/login.jpg');
 	display: block;
-	opacity: 0.8;
+	opacity: 0.9;
 }
 
 .login{

@@ -5,6 +5,7 @@
 		<link href="CSS/lightbox.css" rel="stylesheet">
 		<link rel="stylesheet" type="text/css" href="CSS/foodCalendar.css">
 		<script type="text/javascript" src="js/createCalendar.js"></script>
+		<script type="text/javascript" src="js/lightbox.js"></script>
 	</head>
 	<body>
 		
@@ -17,13 +18,14 @@
 		<!-- The Modal -->
 		<div id="myModal" class="modal">
 			<!-- Modal content -->
-		  	<div class="modal-content" style="width:500px;height: 500px;">
+		  	<div class="modal-content" style="width:500px;height: 500px;overflow-y: auto;">
 		    	<span class="close">&times;</span>
 		    	<table  id="foodDetailList" style="width:100%;height:100%;">
 					<thead>
 						<tr>
 							<th>#</th>
 							<th>名稱</th>
+							<th>餐點</th>
 							<th>卡路里</th>
 							<th>紀錄時間</th>
 						</tr>

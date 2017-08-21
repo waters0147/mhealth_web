@@ -2,7 +2,7 @@ var dateObj = new Date();
 var _firstDay;
 var flag = 0;
 $( document ).ready(function() {
-    	
+        
     // calendar div中的html部分
     renderHtml();
     // 表格中顯示日期
@@ -59,12 +59,12 @@ function renderHtml() {
 
 
 function showCalendarData() {
-	var _imgs = document.getElementsByName("foodImg");
-	for(var i=0;i<_imgs.length;++i){
-		document.getElementsByName("foodImg")[i].removeAttribute("src");
-		document.getElementsByName("foodImg")[i].removeAttribute("onclick");
-		document.getElementsByName("foodImg")[i].style.visibility = 'hidden';
-	}
+    var _imgs = document.getElementsByName("foodImg");
+    for(var i=0;i<_imgs.length;++i){
+        document.getElementsByName("foodImg")[i].removeAttribute("src");
+        document.getElementsByName("foodImg")[i].removeAttribute("onclick");
+        document.getElementsByName("foodImg")[i].style.visibility = 'hidden';
+    }
     var _year = dateObj.getFullYear();
     var _month = dateObj.getMonth() + 1;
     var _dateStr = getDateStr(dateObj);
@@ -103,19 +103,19 @@ function showCalendarData() {
     var date2ISO = _firstDay.toLocaleDateString();
     flag = 0;
     $.ajax({
-    	url:'getFileList.php',
-    	type:'GET',
-    	data:{
-    		firstDay:date2ISO,
-    		flag:flag
-    	},
-    	dataType:'json',
-    	success:function(result){
-    		console.log("SUCCESS");
-    		setImage(result);
-    	},
-    	error:function(xhr, status, error){
-    		console.log("FAILED");    
+        url:'getFileList.php',
+        type:'GET',
+        data:{
+            firstDay:date2ISO,
+            flag:flag
+        },
+        dataType:'json',
+        success:function(result){
+            console.log("SUCCESS");
+            setImage(result);
+        },
+        error:function(xhr, status, error){
+            console.log("FAILED");    
             console.log("XHR = "+xhr.responseText);
             console.log("STATUS = "+status);
             console.log("ERROR = "+error);
@@ -126,11 +126,11 @@ function showCalendarData() {
 //綁定onclick event
 function bindEvent() {
     document.getElementById("prevMonth").addEventListener("click", function() {
-    	toPrevMonth();
-	});
+        toPrevMonth();
+    });
     document.getElementById("nextMonth").addEventListener("click", function() {
-    	toNextMonth();
-	});
+        toNextMonth();
+    });
 
 }
 /**
@@ -167,11 +167,11 @@ function getDateStr(date) {
 
 
 function setImage(result){
-	var _tds = document.getElementsByName("dFont");
+    var _tds = document.getElementsByName("dFont");
     var _imgs = document.getElementsByName("foodImg");
-	for(i=0;i<_tds.length;++i){
-		for(j=0;j<Object.keys(result).length;++j){
-			if(_tds[i].getAttribute("class")=="currentMonth" || _tds[i].getAttribute("class")=="currentDay"){
+    for(i=0;i<_tds.length;++i){
+        for(j=0;j<Object.keys(result).length;++j){
+            if(_tds[i].getAttribute("class")=="currentMonth" || _tds[i].getAttribute("class")=="currentDay"){
                 var str = result[j].recordedTime.substring(0,10).replace(/-/g,"");
                 if(str == _tds[i].getAttribute("data") ){
                     //console.log("J = "+j+" ECODE = "+result[j].image);
@@ -182,43 +182,43 @@ function setImage(result){
                     }
                 }
             }
-		}
-	}
-	
+        }
+    }
+    
 }
 
 
 function showFoodDetail(data){
-	flag=1;
-	$.ajax({
-    	url:'getFileList.php',
-    	type:'GET',
-    	data:{
-    		firstDay:data,
-    		flag:flag
-    	},
-    	dataType:'json',
-    	success:function(result){
+    flag=1;
+    $.ajax({
+        url:'getFileList.php',
+        type:'GET',
+        data:{
+            firstDay:data,
+            flag:flag
+        },
+        dataType:'json',
+        success:function(result){
             console.log(result);
-			var modal = document.getElementById('myModal');
-			// open the modal 
-			showFoodDetailTable(result);
-			modal.style.display = "block";
-			// Get the <span> element that closes the modal
-			var span = document.getElementsByClassName("close")[0];
-			// When the user clicks on <span> (x), close the modal
-			span.onclick = function() {
-			    modal.style.display = "none";
-			    var table = document.getElementById("foodDetailList");
-			    var rowCount = table.rows.length;
-				for (var x=rowCount-1; x>0; x--) {
-				   table.deleteRow(x);
-				}
+            var modal = document.getElementById('myModal');
+            // open the modal 
+            showFoodDetailTable(result);
+            modal.style.display = "block";
+            // Get the <span> element that closes the modal
+            var span = document.getElementsByClassName("close")[0];
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function() {
+                modal.style.display = "none";
+                var table = document.getElementById("foodDetailList");
+                var rowCount = table.rows.length;
+                for (var x=rowCount-1; x>0; x--) {
+                   table.deleteRow(x);
+                }
 
-			}
-    	},
-    	error:function(xhr, status, error){
-    		console.log("FAILED");
+            }
+        },
+        error:function(xhr, status, error){
+            console.log("FAILED");
             alert(xhr.responseText);
 
         }
@@ -227,16 +227,16 @@ function showFoodDetail(data){
 
 
     function showFoodDetailTable(result){
-    	var modal = document.getElementById('myModal');
-    	var table = document.getElementById("foodDetailList");
-    	for(i=0;i<Object.keys(result).length;i++){
+        var modal = document.getElementById('myModal');
+        var table = document.getElementById("foodDetailList");
+        for(i=0;i<Object.keys(result).length;i++){
             var row = table.insertRow(i+1);
             var cell0 = row.insertCell(0);
-	    	var cell1 = row.insertCell(1);
-	    	var cell2 = row.insertCell(2);
-	    	var cell3 = row.insertCell(3);
+            var cell1 = row.insertCell(1);
+            var cell2 = row.insertCell(2);
+            var cell3 = row.insertCell(3);
             var cell4 = row.insertCell(4);
-	    	cell0.innerHTML = i+1;
+            cell0.innerHTML = i+1;
             cell1.innerHTML =  '<a href="data:image/jpeg;base64,'+result[i].image+'" data-lightbox=dataSet>'+result[i].name+'</a>';
             switch(result[i].meal){
                 case '0':
@@ -258,9 +258,9 @@ function showFoodDetail(data){
                     cell2.innerHTML = "其他";
                     break;
             }
-	    	cell3.innerHTML = result[i].calories;
-	    	cell4.innerHTML = result[i].recordedTime;
-	    	
+            cell3.innerHTML = result[i].calories;
+            cell4.innerHTML = result[i].recordedTime;
+            
         }
     }
 
